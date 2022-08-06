@@ -1,0 +1,236 @@
+.parent_container{
+    min-height: 100vh;
+    justify-content: center;
+    display: flex;
+}
+.hero{
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+
+}
+
+.right_strong_color{
+    min-height: 100%;
+    width: 25%;
+    background-color: var(--color-red);
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
+.text_section{
+    width: 50%;
+    /* height: 100vh; */
+    /* background-color: #eee; */
+}
+
+.image_section{
+    width: 50%;
+    /* height: 100vh; */
+    z-index: 2;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.demand_text{
+    font-size: 10em;
+    color: #F6EBE7;
+}
+
+.input{
+    border: none;
+    outline: none;
+    padding: 0 3rem 0 0;
+    font-size: var(--fs-md);
+}
+
+.input_container{
+    background-color: var(--color-white);
+    width: fit-content;
+    justify-content: space-between;
+    color: #eee;
+    margin-top: 50px;
+    border-radius: 5px;
+    padding:0 0 0 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+}
+
+.button{
+    outline: none;
+    background-color: var(--color-red);
+    color: var(--color-white);
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-top-left-radius: 35px;
+    font-size: var(--fs-md);
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.title{
+    color: var(--color-blue);
+    font-size: var(--fs-xl);
+}
+
+.menu{
+        display: none;
+    }
+
+.hero_image{
+    width: 35vw;
+    z-index: 4;
+    right: -50px;
+    position: relative;
+}
+
+.nav_element{
+    padding: 1rem 2rem;
+    color: var(--color-blue);
+    font-weight: var(--fw-medium);
+}
+
+.nav_element:not(.login):hover{
+    background-color: #eee;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.links_parent{
+    display: flex;
+}
+
+.nav{
+    display: flex;
+    padding: 1rem 0;
+    align-items: center;
+    position: relative;
+}
+
+.login{
+    background-color: var(--color-blue);
+    border-radius: 30px;
+    color: var(--color-white);
+    margin-left: 10px;
+}
+
+.login:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+
+ .logo{
+  font-family: var(--ff-pacifico);
+  font-size: var(--fs-xl);
+  align-self: center;
+  margin-right: 200px;
+ }
+
+
+/* // Very Small devices (landscape phones, 576px and down) */
+@media (max-width: 576px) { 
+ 
+ }
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) { 
+  
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) { 
+    .menu{
+        display: block;
+    }
+    .links{
+        flex-direction: column;
+        position: relative;
+        right: 0;
+        top: 0;
+    }
+
+    .links_parent{
+        padding: 1rem;
+        flex-direction: column;
+        position: absolute;
+        right: 0;
+        margin-top: 115%;
+        background-color: var(--color-blue);
+        z-index: 10;
+    }
+    .nav_element{
+        color: var(--color-cream) !important;
+        margin: 0.3rem 0;
+    }
+    .nav_element:not(.login):hover{
+        background-color: rgba(238, 238, 238, 0.26) !important ;
+    }
+
+    .login{
+        background-color: var(--color-red);
+        text-align: center;
+    }
+
+
+  
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (max-width: 992px) { 
+
+  .hero_box{
+    flex-direction: column-reverse;
+  }
+  .demand_text{
+    display: none;
+  }
+  .image_section{
+    min-width: 100%;
+  }
+  .hero_image{
+    right: 0;
+    z-index: 0
+  }
+  .text_section{
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4rem;
+  }
+}
+
+
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (max-width: 1200px) { 
+  .right_strong_color{
+        display: none;
+    }
+    .logo{
+        margin-right: auto !important;
+    }
+
+    .image_section{
+    width: 50%;
+    /* height: 100vh; */
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (max-width: 1400px) { 
+ 
+ }
