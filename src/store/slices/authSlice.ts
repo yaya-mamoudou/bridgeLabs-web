@@ -2,15 +2,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { HTTP_STATUS, http_status_types } from 'constants/httpStatus';
 import { api } from 'helpers/api';
 import { User } from 'constants/types';
+import { formatError } from 'helpers/formatError';
 
 type State = {
 	data: User | null;
 	state: http_status_types | string;
-	message: string;
+	error: string;
 };
 
-let initialState: State = { data: null, state: '', message: '' };
-let errorMessage: string;
+let initialState: State = { data: null, state: '', error: '' };
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -29,7 +29,7 @@ const authSlice = createSlice({
 
 		builder.addCase(_login.rejected, (state, { payload }: any) => {
 			state.state = HTTP_STATUS.REJECTED;
-			state.message = payload;
+			state.error = payload;
 		});
 
 		// Register states
@@ -41,9 +41,9 @@ const authSlice = createSlice({
 			state.state = HTTP_STATUS.FULFLILLED;
 			state.data = payload;
 		});
-		builder.addCase(_register.rejected, (state) => {
+		builder.addCase(_register.rejected, (state, { payload }: any) => {
 			state.state = HTTP_STATUS.REJECTED;
-			state.message = errorMessage;
+			state.error = payload.detail;
 		});
 	},
 });
@@ -53,7 +53,7 @@ export const _login = createAsyncThunk(`auth/login`, async (payload: any, { reje
 		const { data } = await api.post('/user/login', payload);
 		return data;
 	} catch (error: any) {
-		throw rejectWithValue(error.response.data);
+		throw rejectWithValue(formatError(error.response));
 	}
 });
 
@@ -64,7 +64,7 @@ export const _register = createAsyncThunk(
 			const { data } = await api.post('/user/register', payload);
 			return data;
 		} catch (error: any) {
-			throw rejectWithValue(error.message.data);
+			throw rejectWithValue(error.response.data);
 		}
 	}
 );

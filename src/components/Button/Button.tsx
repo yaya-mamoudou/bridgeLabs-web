@@ -25,10 +25,13 @@ export default function Button(props: button) {
 			type={type}
 			style={{
 				background: finalBackground,
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
 				color: finalColor,
 				borderColor: finalBorderColor,
 				borderWidth: finalBorderWidth,
-				padding: '0.4rem 4rem',
+				height: 43,
 				borderRadius: 5,
 				fontSize: '1.1rem',
 				...(width && { width: width }),
@@ -46,7 +49,7 @@ type button = {
 	background?: Color;
 	borderColor?: Color;
 	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-	label: string;
+	label: string | any;
 	borderWidth?: string;
 	type?: 'button' | 'reset' | 'submit';
 	width?: string | number;
