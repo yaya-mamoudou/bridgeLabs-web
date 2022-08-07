@@ -43,7 +43,7 @@ const authSlice = createSlice({
 		});
 		builder.addCase(_register.rejected, (state, { payload }: any) => {
 			state.state = HTTP_STATUS.REJECTED;
-			state.error = payload.detail;
+			state.error = payload;
 		});
 	},
 });
@@ -64,7 +64,7 @@ export const _register = createAsyncThunk(
 			const { data } = await api.post('/user/register', payload);
 			return data;
 		} catch (error: any) {
-			throw rejectWithValue(error.response.data);
+			throw rejectWithValue(formatError(error.response));
 		}
 	}
 );

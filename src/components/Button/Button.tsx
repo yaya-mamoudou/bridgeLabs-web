@@ -11,6 +11,7 @@ export default function Button(props: button) {
 		borderWidth,
 		type = 'button',
 		width,
+		style = {},
 	} = props;
 
 	const finalColor = typeof color == 'string' ? colorSelect(color) : '#fff';
@@ -35,6 +36,7 @@ export default function Button(props: button) {
 				borderRadius: 5,
 				fontSize: '1.1rem',
 				...(width && { width: width }),
+				...style,
 			}}
 		>
 			{label}
@@ -53,6 +55,7 @@ type button = {
 	borderWidth?: string;
 	type?: 'button' | 'reset' | 'submit';
 	width?: string | number;
+	style?: React.CSSProperties;
 };
 
 const colorSelect = (key: string) => {

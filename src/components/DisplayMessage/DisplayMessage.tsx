@@ -10,7 +10,7 @@ export default function DisplayMessage({ type, message, error }: Props) {
 			{error?.error &&
 				Object.keys(error.error).map((key, index) => (
 					<p className='fs-sm' style={{ color: colorPick(type) }} key={index}>
-						{key}: {error.error[key]}
+						- {key}: {error.error[key]}
 					</p>
 				))}
 
@@ -47,5 +47,6 @@ const stateStyle = (type: string) => {
 		border: type === 'failed' ? colorFailed : colorSuccess,
 		borderRadius: 8,
 		color: type === 'failed' ? colorFailed : colorSuccess,
+		marginTop: 'auto',
 	};
 };
