@@ -49,12 +49,6 @@ export default function Home() {
 							<h3 className={`${styles.title}`}>& Delicious Food</h3>
 
 							<div className={`${styles.input_container}`}>
-								{/* <input
-									type='text'
-									placeholder='Click to continue'
-									className={`${styles.input}`}
-									readOnly
-								/> */}
 								<span className={`${styles.input}`}>
 									Click <i className='fa-solid fa-right-long'></i>
 								</span>

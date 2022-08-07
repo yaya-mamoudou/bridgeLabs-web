@@ -17,20 +17,26 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
+		// Login states
 		builder.addCase(_login.pending, (state) => {
 			state.state = HTTP_STATUS.PENDING;
 		});
+
 		builder.addCase(_login.fulfilled, (state, { payload }) => {
 			state.state = HTTP_STATUS.FULFLILLED;
 			state.data = payload;
 		});
-		builder.addCase(_login.rejected, (state) => {
+
+		builder.addCase(_login.rejected, (state, { payload }: any) => {
 			state.state = HTTP_STATUS.REJECTED;
-			state.message = errorMessage;
+			state.message = payload;
 		});
+
+		// Register states
 		builder.addCase(_register.pending, (state) => {
 			state.state = HTTP_STATUS.PENDING;
 		});
+
 		builder.addCase(_register.fulfilled, (state, { payload }) => {
 			state.state = HTTP_STATUS.FULFLILLED;
 			state.data = payload;
@@ -42,15 +48,25 @@ const authSlice = createSlice({
 	},
 });
 
-export const _login = createAsyncThunk(`auth/login`, async (payload) => {
-	const { data } = await api.post('/user/login', payload);
-	return data;
+export const _login = createAsyncThunk(`auth/login`, async (payload: any, { rejectWithValue }) => {
+	try {
+		const { data } = await api.post('/user/login', payload);
+		return data;
+	} catch (error: any) {
+		throw rejectWithValue(error.response.data);
+	}
 });
 
-export const _register = createAsyncThunk(`auth/register`, async (payload) => {
-	const { data } = await api.post('/user/register', payload);
-	console.log(data);
-	return data;
-});
+export const _register = createAsyncThunk(
+	`auth/register`,
+	async (payload: any, { rejectWithValue }) => {
+		try {
+			const { data } = await api.post('/user/register', payload);
+			return data;
+		} catch (error: any) {
+			throw rejectWithValue(error.message.data);
+		}
+	}
+);
 
 export default authSlice.reducer;
