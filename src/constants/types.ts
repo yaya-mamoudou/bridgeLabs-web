@@ -4,4 +4,10 @@ type User = {
 	phone_number: number;
 };
 
-export type { User };
+type Category = {
+	name: string;
+	description: string;
+	image: string;
+};
+
+export type { User, Category };
