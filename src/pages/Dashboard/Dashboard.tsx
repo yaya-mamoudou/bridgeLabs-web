@@ -32,7 +32,23 @@ export default function Dashboard() {
 						</li>
 					</ul>
 				</div>
-				<div className={`${styles.body}`}>Hey</div>
+
+				<div className={`${styles.body}`}>
+					<div className='d-flex justify-between'>
+						<div className={`${styles.card} ${styles.addCard}`}>
+							<i className='fa-solid fa-plus fa-2x'></i>
+							<h3>Add Category</h3>
+						</div>
+						<div className={`${styles.card} ${styles.otherCards}`}>
+							<h1>0</h1>
+							<h3>Number of Categories</h3>
+						</div>
+						<div className={`${styles.card} ${styles.otherCards}`}>
+							<h1>0</h1>
+							<h3>Number of Views</h3>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
