@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './home.module.css';
 
 export default function Home() {
+	const navigate = useNavigate();
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => setShowMenu(!showMenu);
 	const [size, setSize] = useState<any>();
+	const [auth, setAuth] = useState<any>();
 
 	useEffect(() => {
+		setAuth(localStorage.getItem('user'));
 		window.addEventListener('resize', (e) => {
 			e.target && setSize(window?.innerWidth);
 		});
@@ -34,11 +37,13 @@ export default function Home() {
 								<li className={`${styles.nav_element}`}>About</li>
 								<li className={`${styles.nav_element}`}>Contacts</li>
 								<li className={`${styles.nav_element}`}>Services</li>
-								<Link to={'login'}>
-									<li className={`${styles.nav_element} ${styles.login}`}>
-										Login
-									</li>
-								</Link>
+								{!auth && (
+									<Link to={'login'}>
+										<li className={`${styles.nav_element} ${styles.login}`}>
+											Login
+										</li>
+									</Link>
+								)}
 							</div>
 						</ul>
 					</nav>
@@ -52,7 +57,13 @@ export default function Home() {
 								<span className={`${styles.input}`}>
 									Click <i className='fa-solid fa-right-long'></i>
 								</span>
-								<button className={`${styles.button}`}>Get started</button>
+								<button
+									type='button'
+									onClick={() => navigate(auth ? '/dashboard' : '/login')}
+									className={`${styles.button}`}
+								>
+									Get started
+								</button>
 							</div>
 						</div>
 						<div className={`${styles.image_section} `}>
