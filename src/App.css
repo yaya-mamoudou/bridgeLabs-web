@@ -9,7 +9,7 @@
   --color-cream: #FFF5EC;
   --color-white: #FFFFFF;
   --color-gray: #ABA49C;
-  --color-black: #3d3d3d;
+  --color-black: #737373;
 
   /* Font Family */
   --ff-poppins: 'Poppins', sans-serif;
@@ -66,7 +66,11 @@
 }
 
 body{
-  background-color: var(--color-cream);
+  /* background-color: var(--color-cream); */
+}
+
+.black{
+  color: var(--color-black);
 }
 
 input{
@@ -84,6 +88,11 @@ input{
 
 .list-none{
   list-style: none;
+}
+
+.shadow{
+    box-shadow: 1px 1px 12px 1px rgb(223, 223, 223);
+
 }
 
 /* FLEX */
@@ -150,6 +159,19 @@ width: 100vw;
   align-items: center;
 }
 
+.hover:hover{
+  cursor: pointer;
+}
+
+.hover-red:hover > *{
+  cursor: pointer;
+  color: var(--color-red);
+}
+
+.hover-blue:hover > *{
+  cursor: pointer;
+  color: var(--color-blue);
+}
 
 a{
   text-decoration: none;

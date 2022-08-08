@@ -8,6 +8,7 @@ type Category = {
 	name: string;
 	description: string;
 	image: string;
+	id: string | number;
 };
 
 export type { User, Category };

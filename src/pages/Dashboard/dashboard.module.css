@@ -20,8 +20,9 @@
     font-size: 1.4rem;
     z-index: 1;
     margin-top: 50px;
-
 }
+
+
 
 .rightSide{
     flex: 1;
@@ -43,7 +44,8 @@
 
 .body{
     overflow-y: auto;
-    max-height: calc(100vh - 70px);
+    height: 100%;
+    max-height: calc(100vh - 100px);
     padding: 1.5rem 5rem;
 
 }
@@ -82,6 +84,72 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.catParents{
+    /* margin-top: 5rem; */
+    display: grid;
+    gap: 5rem;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.category{
+/* width: 100%; */
+background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+
+}
+
+
+.modal{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modalContainer{
+    background-color: white;
+    height: 100%;
+    width: 50%;
+    padding: 2rem;
+    /* border-radius: 10px; */
+}
+
+.imageContainer{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    background-color: #eee;
+    margin: auto;
+    position: relative;
+}
+
+.imageAdd{
+    height: 30px;
+    width: 30px;
+    background-color: var(--color-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    border-radius: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.imageAdd > *{
+    color: white;
+}
+.imageAdd > input{
+    display: none;
 }
 
 /* .otherCards > *{
