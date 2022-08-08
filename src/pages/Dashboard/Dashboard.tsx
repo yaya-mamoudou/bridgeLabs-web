@@ -14,7 +14,7 @@ import styles from './dashboard.module.css';
 export default function Dashboard() {
 	const { name, avatar, last_name } = JSON.parse(localStorage.getItem('user') || '{}');
 	const { data, error, state } = useSelector(({ categories }: any) => categories);
-	const [item, setItem] = useState();
+	const [item, setItem] = useState<any>();
 	const [open, setOpen] = useState(false);
 
 	const dispatch = useDispatch<any>();
@@ -88,7 +88,7 @@ export default function Dashboard() {
 					</div>
 				</div>
 			</div>
-			{open && <Modal setOpen={setOpen} item={item} />}
+			{open && <Modal clearItem={() => setItem(null)} setOpen={setOpen} item={item} />}
 		</div>
 	);
 }
@@ -149,7 +149,7 @@ const Category = ({ cat, updateItem }: any) => {
 	);
 };
 
-const Modal = ({ setOpen, item }: any) => {
+const Modal = ({ setOpen, item, clearItem }: any) => {
 	const { data, error, state } = useSelector(({ categories }: any) => categories);
 	const dispatch = useDispatch<any>();
 	const [preview, setPreview] = useState<any>(item?.image || '');
@@ -164,6 +164,13 @@ const Modal = ({ setOpen, item }: any) => {
 	}, []);
 
 	useEffect(() => {
+		if (state === HTTP_STATUS.FULFLILLED && message.length > 0) {
+			dispatch(resetCategoryState());
+			setTimeout(() => setMessage(''), 5000);
+		}
+	}, [image, name, description]);
+
+	useEffect(() => {
 		if (image) {
 			// create the preview
 			const objectUrl = URL.createObjectURL(image);
@@ -176,13 +183,6 @@ const Modal = ({ setOpen, item }: any) => {
 	const selectImage = (e: any) => {
 		setImage(e[0]);
 	};
-
-	useEffect(() => {
-		if (state === HTTP_STATUS.FULFLILLED && message.length > 0) {
-			dispatch(resetCategoryState());
-			setTimeout(() => setMessage(''), 5000);
-		}
-	}, [image, name, description]);
 
 	const submit = async (e: any) => {
 		e.preventDefault();
@@ -208,6 +208,9 @@ const Modal = ({ setOpen, item }: any) => {
 			setName('');
 			setDescription('');
 			setPreview('');
+			if (item) {
+				clearItem();
+			}
 		}
 	};
 

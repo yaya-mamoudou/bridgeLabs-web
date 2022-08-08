@@ -62,7 +62,7 @@ const categorySlice = createSlice({
 		});
 
 		builder.addCase(_updateCategory.fulfilled, (state, { payload }) => {
-			let selected = state.data.findIndex((i: any) => i == payload.id);
+			let selected = state.data.findIndex((i: any) => i.id === payload.id);
 			let tempData = state.data;
 			tempData[selected] = payload;
 
