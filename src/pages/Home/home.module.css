@@ -147,6 +147,9 @@
 
 /* // Medium devices (tablets, 768px and up) */
 @media (max-width: 768px) { 
+    .logo{
+        font-size: 1.2rem;
+    }
     .menu{
         display: block;
     }

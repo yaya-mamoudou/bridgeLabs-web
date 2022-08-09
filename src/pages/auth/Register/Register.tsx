@@ -6,23 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { _login, _register } from 'store/slices/authSlice';
 import styles from './register.module.css';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import jwtDecode from 'jwt-decode';
 
 export default function Register() {
 	const { error, state, data } = useSelector(({ auth }: any) => auth);
 	const navigate = useNavigate();
-
-	console.log(data, state, error);
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [first_name, setFirst_name] = useState('');
 	const [phone, setPhone] = useState('');
 	const [last_name, setLast_name] = useState('');
+	const [usingGoogleAuth, setUsingGoogleAuth] = useState<boolean>(false);
 
 	const dispatch = useDispatch<any>();
 	const [loading, setLoading] = useState<boolean>();
 
-	const register = (e: any) => {
+	const register = async (e: any) => {
 		e.preventDefault();
 		const formData = new FormData();
 		formData.append('first_name', first_name);
@@ -30,7 +31,18 @@ export default function Register() {
 		formData.append('password', password);
 		formData.append('phone', phone);
 		formData.append('last_name', last_name);
-		dispatch(_register(formData));
+
+		const { error, payload } = await dispatch(_register(formData));
+
+		if (!error) {
+			const { email, name, last_name, phone, avatar, id, token } = payload;
+			localStorage.setItem('bl-token', token);
+			localStorage.setItem(
+				'user',
+				JSON.stringify({ email, name, last_name, phone, avatar, id })
+			);
+			setAuth(token).then((d) => navigate('/dashboard', { replace: true }));
+		}
 	};
 
 	useEffect(() => {
@@ -44,6 +56,48 @@ export default function Register() {
 			setAuth(data.token).then((d) => navigate('/dashboard', { replace: true }));
 		}
 	}, [data]);
+
+	const handleGoogleAuthSuccess = async (e: CredentialResponse) => {
+		setUsingGoogleAuth(true);
+		let user = jwtDecode(`${e.credential}`);
+		let { email, given_name, family_name, picture, sub }: any = user;
+		console.log(user);
+
+		const formData = new FormData();
+		formData.append('first_name', given_name);
+		formData.append('email', email);
+		formData.append('password', sub);
+		formData.append('last_name', family_name);
+		formData.append('phone', '');
+		formData.append('avatar', picture);
+
+		const register_res = await dispatch(_register(formData));
+		if (!register_res.error) {
+			auth(register_res.payload, navigate);
+			setUsingGoogleAuth(false);
+			return;
+		}
+
+		const login_res = await dispatch(_login({ email, password: sub }));
+		const { error, payload } = login_res;
+
+		if (!error) {
+			auth(payload, navigate);
+			return;
+		}
+	};
+
+	const handleGoogleAuthFail = () => {
+		// console.log('failure');
+	};
+
+	const auth = (data: any, navigate: Function) => {
+		const { email, name, last_name, phone, avatar, id, token } = data;
+
+		localStorage.setItem('bl-token', token);
+		localStorage.setItem('user', JSON.stringify({ email, name, last_name, phone, avatar, id }));
+		setAuth(token).then((d) => navigate('/dashboard', { replace: true }));
+	};
 
 	const handleChange = (key: string, value: any) => {
 		switch (key) {
@@ -83,24 +137,9 @@ export default function Register() {
 				<div className={`${styles.right}`}>
 					<h2 className='black logo'>Register</h2>
 
-					{error && <DisplayMessage type='failed' error={error} />}
+					{error && !usingGoogleAuth && <DisplayMessage type='failed' error={error} />}
 
-					<form style={{ marginTop: 'auto' }} onSubmit={register}>
-						{/* <div className={`${styles.avatarContainer}`}>
-							<div>
-								<i className={`fa-solid fa-user fa-2x`}></i>
-							</div>
-							<label htmlFor='avatar' className={`${styles.addPic}`}>
-								<input
-									onChange={(e) => handleChange('avatar', e.target.files)}
-									id='avatar'
-									type='file'
-									accept='image/*'
-								/>
-								<i className={`fa-solid fa-plus`}></i>
-							</label>
-						</div> */}
-
+					<form style={{ marginTop: 20 }} onSubmit={register}>
 						<div className={`${styles.input}`}>
 							<i className='fa-solid fa-user' style={{ marginRight: 10 }}></i>
 							<input
@@ -137,7 +176,7 @@ export default function Register() {
 						<div className={`${styles.input}`}>
 							<i className='fa-solid fa-phone' style={{ marginRight: 10 }}></i>
 							<input
-								required
+								// required
 								onChange={(e) => handleChange('phone', e.target.value)}
 								autoComplete='off'
 								type='number'
@@ -163,10 +202,12 @@ export default function Register() {
 							label={loading ? <Loader /> : 'Register'}
 							background='red'
 						/>
-						<div className={`${styles.google} fs-sm `}>
-							<img style={{ width: 23, marginRight: 10 }} src='assets/google.png' />
-							Sign up with Google
-						</div>
+						<GoogleLogin
+							shape='pill'
+							// buttonText='Login with google'
+							onSuccess={handleGoogleAuthSuccess}
+							onError={handleGoogleAuthFail}
+						/>
 					</form>
 
 					<p className={`${styles.no_password} fs-sm`}>

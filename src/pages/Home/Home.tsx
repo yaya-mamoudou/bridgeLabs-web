@@ -10,7 +10,8 @@ export default function Home() {
 	const [auth, setAuth] = useState<any>();
 
 	useEffect(() => {
-		setAuth(localStorage.getItem('user'));
+		setAuth(localStorage.getItem('bl-token'));
+		setSize(window?.innerWidth);
 		window.addEventListener('resize', (e) => {
 			e.target && setSize(window?.innerWidth);
 		});
@@ -30,9 +31,9 @@ export default function Home() {
 								onClick={toggleMenu}
 							></i>
 							<div
-								className={` ${size < 768 && !showMenu && 'd-none'} ${
-									styles.links_parent
-								}`}
+								className={`${styles.links_parent}  ${
+									size < 768 ? (showMenu ? 'd-flex' : 'd-none') : 'd-flex'
+								} `}
 							>
 								<li className={`${styles.nav_element}`}>About</li>
 								<li className={`${styles.nav_element}`}>Contacts</li>
@@ -59,7 +60,7 @@ export default function Home() {
 								</span>
 								<button
 									type='button'
-									onClick={() => navigate(auth ? '/dashboard' : '/login')}
+									onClick={() => navigate('/dashboard')}
 									className={`${styles.button}`}
 								>
 									Get started

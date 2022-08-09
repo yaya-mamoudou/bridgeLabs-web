@@ -66,12 +66,18 @@
 }
 
 body{
-  /* background-color: var(--color-cream); */
+  background-color: var(--color-cream);
 }
 
 .black{
   color: var(--color-black);
 }
+
+.white{
+  color: var(--color-white);
+}
+
+
 
 input{
   width: 100%;
@@ -88,6 +94,10 @@ input{
 
 .list-none{
   list-style: none;
+}
+
+.mx-sm{
+    margin: 0 5px;
 }
 
 .shadow{

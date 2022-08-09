@@ -1,7 +1,8 @@
 import { Button, DisplayMessage, Loader } from 'components';
 import { HTTP_STATUS } from 'constants/httpStatus';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
 	resetCategoryState,
 	_createCategories,
@@ -12,10 +13,13 @@ import {
 import styles from './dashboard.module.css';
 
 export default function Dashboard() {
-	const { name, avatar, last_name } = JSON.parse(localStorage.getItem('user') || '{}');
-	const { data, error, state } = useSelector(({ categories }: any) => categories);
+	const navigate = useNavigate();
+	const { avatar } = JSON.parse(localStorage.getItem('user') || '{}');
+	const { data, state } = useSelector(({ categories }: any) => categories);
 	const [item, setItem] = useState<any>();
 	const [open, setOpen] = useState(false);
+	const [loggingOut, setLoggingOut] = useState(false);
+	console.log(data, state);
 
 	const dispatch = useDispatch<any>();
 
@@ -26,6 +30,21 @@ export default function Dashboard() {
 	const updateItem = (cat: any) => {
 		setItem(cat);
 		setOpen(true);
+	};
+
+	const toggleModal = (e: boolean) => {
+		item && setItem(undefined);
+		setOpen(e);
+	};
+
+	const logout = () => {
+		setLoggingOut(true);
+		localStorage.removeItem('bl-token');
+		localStorage.removeItem('user');
+
+		setTimeout(() => {
+			navigate('/', { replace: true });
+		}, 2000);
 	};
 
 	return (
@@ -41,7 +60,24 @@ export default function Dashboard() {
 				<div className={`${styles.navbar}`}>
 					<span className={`logo ${styles.logo}`}>yaya-grill</span>
 					<ul className='list-none d-flex items-center'>
-						<li style={{ textTransform: 'uppercase' }}>{`${name} ${last_name}`}</li>
+						<li>
+							<Button
+								onClick={logout}
+								style={{ padding: '0.3rem 2rem' }}
+								label={
+									loggingOut ? (
+										<>
+											<Loader color='red' />
+										</>
+									) : (
+										<>
+											<i className='fa-solid fa-arrow-right-from-bracket white mx-sm'></i>
+											Logout
+										</>
+									)
+								}
+							/>
+						</li>
 						<li>
 							<img
 								style={{
@@ -60,35 +96,42 @@ export default function Dashboard() {
 
 				<div className={`${styles.body}`}>
 					<h2 className='black'>Metrics</h2>
-					<div className='d-flex justify-between' style={{ marginTop: 10 }}>
+					<div
+						className='d-flex'
+						style={{ marginTop: 10, flexWrap: 'wrap', gap: '2rem' }}
+					>
 						<div
 							onClick={() => setOpen(true)}
 							className={`${styles.card} ${styles.addCard}`}
 						>
 							<i className='fa-solid fa-plus fa-2x'></i>
-							<h3>Add Category</h3>
+							<h3>Add </h3>
 						</div>
 						<div className={`${styles.card} ${styles.otherCards}`}>
 							<h1>{data.length}</h1>
-							<h3>Number of Categories</h3>
-						</div>
-						<div className={`${styles.card} ${styles.otherCards}`}>
-							<h1>101</h1>
-							<h3>Number of Views</h3>
+							<h3>Categories</h3>
 						</div>
 					</div>
 
 					<h2 style={{ marginTop: 50, marginBottom: 10 }} className='black'>
-						Metrics
+						Categories
 					</h2>
 					<div className={`${styles.catParents}`}>
-						{data?.map((cat: any, index: string) => (
-							<Category updateItem={updateItem} cat={cat} />
-						))}
+						{data.length > 0 ? (
+							data?.map((cat: any, index: string) => (
+								<Category updateItem={updateItem} cat={cat} />
+							))
+						) : state === HTTP_STATUS.PENDING ? (
+							<div>
+								<Loader color='red' /> <span>Fetching categories</span>
+							</div>
+						) : (
+							state === HTTP_STATUS.FULFLILLED && <h4>No categories yet</h4>
+						)}
 					</div>
 				</div>
 			</div>
-			{open && <Modal clearItem={() => setItem(null)} setOpen={setOpen} item={item} />}
+			{open && <Modal clearItem={() => setItem(null)} setOpen={toggleModal} item={item} />}
 		</div>
 	);
 }
@@ -149,7 +192,7 @@ const Category = ({ cat, updateItem }: any) => {
 	);
 };
 
-const Modal = ({ setOpen, item, clearItem }: any) => {
+const Modal = ({ setOpen, item = undefined, clearItem }: any) => {
 	const { data, error, state } = useSelector(({ categories }: any) => categories);
 	const dispatch = useDispatch<any>();
 	const [preview, setPreview] = useState<any>(item?.image || '');
@@ -172,10 +215,8 @@ const Modal = ({ setOpen, item, clearItem }: any) => {
 
 	useEffect(() => {
 		if (image) {
-			// create the preview
 			const objectUrl = URL.createObjectURL(image);
 			setPreview(objectUrl);
-			// free memory when ever this component is unmounted
 			return () => URL.revokeObjectURL(objectUrl);
 		}
 	}, [image]);
@@ -187,14 +228,15 @@ const Modal = ({ setOpen, item, clearItem }: any) => {
 	const submit = async (e: any) => {
 		e.preventDefault();
 
+		let res;
 		const formData = new FormData();
 		formData.append('name', name);
 		formData.append('description', description);
+
 		if (image) {
 			formData.append('image', image);
 		}
 
-		let res;
 		if (!item) {
 			res = await dispatch(_createCategories(formData));
 		}
@@ -282,7 +324,15 @@ const Modal = ({ setOpen, item, clearItem }: any) => {
 						</div>
 						<Button
 							type='submit'
-							label={state === HTTP_STATUS.PENDING ? <Loader /> : 'Add category'}
+							label={
+								state === HTTP_STATUS.PENDING ? (
+									<Loader />
+								) : item?.name ? (
+									'Update Category'
+								) : (
+									'Add category'
+								)
+							}
 							background='red'
 							width={'100%'}
 						/>

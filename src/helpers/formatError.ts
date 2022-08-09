@@ -8,4 +8,5 @@ export const formatError = (error: any) => {
 	if (status === 401) {
 		return { message: data.detail };
 	}
+	return { message: 'Something unexpected happened, try again' };
 };

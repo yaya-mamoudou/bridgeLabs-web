@@ -88,3 +88,68 @@
 .no_password{
     margin-top: 20px;
 }
+
+
+
+/* // Very Small devices (landscape phones, 576px and down) */
+@media (max-width: 576px) { 
+ 
+ }
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) { 
+    .container{
+        flex-direction: column-reverse;
+    }
+  .left{
+        height: 100px;
+        min-height: 0;
+        width: 100% !important;
+    }
+    .right{
+        width: 100% !important;
+        padding: 1rem;
+    }
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) { 
+   .left{
+        width: 10%;
+        position: relative;
+    }
+    .right{
+        width: 90% ;
+    }
+
+  
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (max-width: 992px) { 
+    /* .left{
+        width: 30% !important;
+    }
+    .right{
+        width: 70% !important ;
+    } */
+  
+}
+
+
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (max-width: 1200px) { 
+  .left{
+    width: 30%;
+  }
+  .right{
+    width: 70%;
+  }
+  
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (max-width: 1400px) { 
+ 
+ }

@@ -111,7 +111,7 @@ export const _deleteCategory = createAsyncThunk(
 	`category/delete`,
 	async (payload: number | string, { rejectWithValue }) => {
 		try {
-			const { data } = await api.delete(`/category/delete/${payload}`);
+			await api.delete(`/category/delete/${payload}`);
 			return payload;
 		} catch (error: any) {
 			throw rejectWithValue(formatError(error.response));
