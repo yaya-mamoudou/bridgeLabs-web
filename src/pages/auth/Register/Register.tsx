@@ -202,12 +202,13 @@ export default function Register() {
 							label={loading ? <Loader /> : 'Register'}
 							background='red'
 						/>
-						<GoogleLogin
-							shape='pill'
-							// buttonText='Login with google'
-							onSuccess={handleGoogleAuthSuccess}
-							onError={handleGoogleAuthFail}
-						/>
+						<div style={{ marginTop: 10 }}>
+							<GoogleLogin
+								useOneTap
+								shape='pill'
+								onSuccess={handleGoogleAuthSuccess}
+							/>
+						</div>
 					</form>
 
 					<p className={`${styles.no_password} fs-sm`}>

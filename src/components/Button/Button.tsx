@@ -12,6 +12,7 @@ export default function Button(props: button) {
 		type = 'button',
 		width,
 		style = {},
+		className,
 	} = props;
 
 	const finalColor = typeof color == 'string' ? colorSelect(color) : '#fff';
@@ -21,7 +22,7 @@ export default function Button(props: button) {
 
 	return (
 		<button
-			className={styles.button}
+			className={`${styles.button} ${className}`}
 			onClick={onClick ? onClick : () => {}}
 			type={type}
 			style={{
@@ -56,6 +57,7 @@ type button = {
 	type?: 'button' | 'reset' | 'submit';
 	width?: string | number;
 	style?: React.CSSProperties;
+	className?: string;
 };
 
 const colorSelect = (key: string) => {

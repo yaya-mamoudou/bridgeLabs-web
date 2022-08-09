@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { _login, _register } from 'store/slices/authSlice';
 import styles from './login.module.css';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import {
+	GoogleLogin,
+	CredentialResponse,
+	useGoogleOneTapLogin,
+	useGoogleLogin,
+} from '@react-oauth/google';
 import jwtDecode from 'jwt-decode';
 export default function Login() {
 	const { error, state } = useSelector(({ auth }: any) => auth);
@@ -49,20 +54,27 @@ export default function Login() {
 		} catch (error) {}
 	};
 
+	const goo = useGoogleLogin({
+		flow: 'implicit',
+		onSuccess: async (codeResponse) => {
+			console.log(codeResponse);
+		},
+		onError: (errorResponse) => console.log(errorResponse),
+	});
+
 	const handleGoogleAuthSuccess = async (e: CredentialResponse) => {
+		// const handleGoogleAuthSuccess = async () => {
+		// goo();
 		setUsingGoogleAuth(true);
 		let user = jwtDecode(`${e.credential}`);
 		let { email, given_name, family_name, picture, sub }: any = user;
 		console.log(user);
-
 		const login_res = await dispatch(_login({ email, password: sub }));
 		const { error, payload } = login_res;
-
 		if (!error) {
 			auth(payload, navigate);
 			return;
 		}
-
 		const formData = new FormData();
 		formData.append('first_name', given_name);
 		formData.append('email', email);
@@ -70,7 +82,6 @@ export default function Login() {
 		formData.append('last_name', family_name);
 		formData.append('phone', '');
 		formData.append('avatar', picture);
-
 		const register_res = await dispatch(_register(formData));
 		!register_res.error && auth(register_res.payload, navigate);
 		setUsingGoogleAuth(false);
@@ -137,7 +148,15 @@ export default function Login() {
 							label={loading ? <Loader /> : 'Login'}
 							background='red'
 						/>
-						<GoogleLogin useOneTap shape='pill' onSuccess={handleGoogleAuthSuccess} />
+						<div style={{ marginTop: 10 }}>
+							{/* <h3>Google</h3> */}
+							<GoogleLogin
+								ux_mode='popup'
+								useOneTap
+								shape='pill'
+								onSuccess={handleGoogleAuthSuccess}
+							/>
+						</div>
 					</form>
 
 					<p className={`${styles.no_password} fs-sm`}>

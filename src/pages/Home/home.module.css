@@ -208,6 +208,8 @@
     flex-direction: column;
     align-items: center;
     margin-top: 4rem;
+    text-align: center;
+    font-size: 0.89rem !important;
   }
 }
 

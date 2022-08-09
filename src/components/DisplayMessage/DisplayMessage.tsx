@@ -47,6 +47,6 @@ const stateStyle = (type: string) => {
 		border: type === 'failed' ? colorFailed : colorSuccess,
 		borderRadius: 8,
 		color: type === 'failed' ? colorFailed : colorSuccess,
-		marginTop: 'auto',
+		marginTop: 10,
 	};
 };

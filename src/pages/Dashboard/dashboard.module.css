@@ -49,7 +49,7 @@
     overflow-y: auto;
     height: 100%;
     max-height: calc(100vh - 100px);
-    padding: 1.5rem 5rem;
+    padding: 2rem 5rem;
 
 }
 
@@ -155,6 +155,11 @@ background-color: white;
     display: none;
 }
 
+
+.logoutButton > *{
+    color: white !important;
+}
+
 /* .otherCards > *{
     color: var(--color-black);
 } */
@@ -202,6 +207,17 @@ background-color: white;
 
    .modalContainer{
         width: 80% ;
+   }
+
+   .logoutButton{
+   padding: 0.35rem !important;
+   font-size: 1rem !important;
+   /* background-color: transparent !important; */
+   /* color: black !important; */
+   }
+
+   .logoutButton span{
+        display: none !important;
    }
 
  }

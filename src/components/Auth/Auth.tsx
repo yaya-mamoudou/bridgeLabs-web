@@ -22,6 +22,7 @@ const NotAuthorized = () => {
 				justifyContent: 'center',
 				alignItems: 'center',
 				flexDirection: 'column',
+				textAlign: 'center',
 			}}
 		>
 			<h2>This section of the site requires authorization</h2>

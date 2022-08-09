@@ -62,6 +62,7 @@ export default function Dashboard() {
 					<ul className='list-none d-flex items-center'>
 						<li>
 							<Button
+								className={`${styles.logoutButton}`}
 								onClick={logout}
 								style={{ padding: '0.3rem 2rem' }}
 								label={
@@ -72,7 +73,7 @@ export default function Dashboard() {
 									) : (
 										<>
 											<i className='fa-solid fa-arrow-right-from-bracket white mx-sm'></i>
-											Logout
+											<span>Logout</span>
 										</>
 									)
 								}
