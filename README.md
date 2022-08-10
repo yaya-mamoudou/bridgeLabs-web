@@ -1,3 +1,18 @@
+# bridgeLab-Frontend
+## About
+This repo is a Frontend built using **Reactjs**, **Typescript**
+
+### The folowing can be done in this website
+1. Create user
+2. Authenticate user
+3. Create category
+4. Delete category
+5. update category
+6. get all categories
+7. google auth
+
+## Output url [here](https://bridgelab.herokuapp.com/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
